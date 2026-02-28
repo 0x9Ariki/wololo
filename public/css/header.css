@@ -28,7 +28,7 @@
 .app-header h1 {
   font-style: normal;
   font-weight: normal;
-  color: #8d8d8d;
+  color: rgb(179, 167, 11);
   font-size: 14px;
   padding-left: 8px;
   margin: 0;
@@ -76,8 +76,8 @@
   content: '';
   width: 30px;
   height: 30px;
-  mask: url('../img/window_minimize.svg') center center no-repeat;
-  -webkit-mask: url('../img/window_minimize.svg') center center no-repeat;
+  mask: url('../img/aoe2.png') center center no-repeat;
+  -webkit-mask: url('../img/aoe2.png') center center no-repeat;
   background-color: #a8a8a8;
   transition: inherit;
 }
