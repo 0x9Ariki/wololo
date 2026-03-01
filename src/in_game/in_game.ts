@@ -7,16 +7,16 @@ import {
 import { AppWindow } from "../AppWindow";
 import { kHotkeys, kWindowNames, kGamesFeatures } from "../consts";
 
+// Kendi yazdığımız Telemetri İzleyicisini içeri aktarıyoruz
+import { TelemetryWatcher } from "./TelemetryWatcher"; 
+
 import WindowState = overwolf.windows.WindowStateEx;
 
-// The window displayed in-game while a game is running.
-// It listens to all info events and to the game events listed in the consts.ts file
-// and writes them to the relevant log using <pre> tags.
-// The window also sets up Ctrl+F as the minimize/restore hotkey.
-// Like the background window, it also implements the Singleton design pattern.
 class InGame extends AppWindow {
   private static _instance: InGame;
   private _gameEventsListener: OWGamesEvents;
+  private _telemetryWatcher: TelemetryWatcher; // Telemetri değişkenimiz
+  
   private _eventsLog: HTMLElement;
   private _infoLog: HTMLElement;
 
@@ -34,13 +34,16 @@ class InGame extends AppWindow {
     if (!this._instance) {
       this._instance = new InGame();
     }
-
     return this._instance;
   }
 
   public async run() {
-    const gameClassId = await this.getCurrentGameClassId();
+    // Oyunun tamamen yüklenmesi için 5 saniye bekle
+    await new Promise(resolve => setTimeout(resolve, 5000));
 
+    const gameClassId = await this.getCurrentGameClassId();
+    
+    // consts.ts içinden bu oyun için hangi özellikleri dinleyeceğimizi alıyoruz
     const gameFeatures = kGamesFeatures.get(gameClassId);
 
     if (gameFeatures && gameFeatures.length) {
@@ -53,54 +56,111 @@ class InGame extends AppWindow {
       );
 
       this._gameEventsListener.start();
+    } else {
+      console.warn(`Oyun ID ${gameClassId} için dinlenecek özellik (feature) bulunamadı.`);
+    }
+
+    // === AGE OF EMPIRES 2 TELEMETRİ İZLEYİCİSİ ===
+    this._telemetryWatcher = new TelemetryWatcher();
+    this._telemetryWatcher.startWatching((eventName, attributes) => {
+      // Yakalanan olayı yeni yazdığımız fonksiyona gönderiyoruz
+      this.onAoeTelemetryEvent(eventName, attributes);
+    });
+  }
+
+  // --- Yeni Eklenen UI Güncelleme Fonksiyonu ---
+  private onAoeTelemetryEvent(eventName: string, attributes: any) {
+    console.log(`[AoE 2] ${eventName} yakalandı!`);
+    
+    // Sağdaki log ekranına ham veriyi yazdır
+    this.logLine(this._eventsLog, { AoE_Event: eventName, Data: attributes }, true);
+
+    // HTML Arayüzündeki (UI) elementleri yakala
+    const statusEl = document.getElementById('status-text');
+    const scoreEl = document.getElementById('val-score');
+    const woodEl = document.getElementById('val-wood');
+    const foodEl = document.getElementById('val-food');
+    const goldEl = document.getElementById('val-gold');
+    const stoneEl = document.getElementById('val-stone');
+
+    // Gelen olayın ismine göre UI'ı güncelle
+    switch (eventName) {
+      case 'MatchStatsSnapshot':
+        if (statusEl) statusEl.innerText = "Maç Devam Ediyor ⚔️";
+        // Oyundan gelen veriyi ekrana yaz, veri yoksa o anki değeri koru
+        if (scoreEl && attributes.TotalScore !== undefined) scoreEl.innerText = attributes.TotalScore;
+        if (woodEl && attributes.WoodCollected !== undefined) woodEl.innerText = attributes.WoodCollected;
+        if (foodEl && attributes.FoodCollected !== undefined) foodEl.innerText = attributes.FoodCollected;
+        if (goldEl && attributes.GoldCollected !== undefined) goldEl.innerText = attributes.GoldCollected;
+        if (stoneEl && attributes.StoneCollected !== undefined) stoneEl.innerText = attributes.StoneCollected;
+        break;
+
+      case 'AgeAdvancement':
+        if (statusEl) {
+          statusEl.innerText = `Çağ Atlandı! 🚀`;
+          statusEl.style.color = "#2ecc71"; // Yeşil yap
+          
+          // 5 saniye sonra tekrar normal durum yazısına dönsün
+          setTimeout(() => {
+            statusEl.innerText = "Maç Devam Ediyor ⚔️";
+            statusEl.style.color = "#bdc3c7";
+          }, 5000);
+        }
+        break;
+
+      case 'ELOUpdate':
+        if (statusEl) {
+          statusEl.innerText = "Maç Bitti 🏁";
+          statusEl.style.color = "#e74c3c"; // Kırmızı yap
+        }
+        break;
     }
   }
 
+  // Oyun içi bilgiler (Oyuncular, Civler, Harita vb.) güncellendiğinde tetiklenir
   private onInfoUpdates(info) {
+    console.log("Bilgi Güncellemesi:", info);
     this.logLine(this._infoLog, info, false);
   }
 
-  // Special events will be highlighted in the event log
+  // Önemli anlık olaylar (Ölüm, Maç Sonu vb.) tetiklenir
   private onNewEvents(e) {
     const shouldHighlight = e.events.some(event => {
       switch (event.name) {
         case 'kill':
         case 'death':
-        case 'assist':
-        case 'level':
-        case 'matchStart':
-        case 'match_start':
-        case 'matchEnd':
+        case 'match_start': 
+        case 'matchStart':  
         case 'match_end':
+        case 'matchEnd':
+        case 'victory':
+        case 'defeat':
           return true;
+        default:
+          return false;
       }
-
-      return false
     });
+    
     this.logLine(this._eventsLog, e, shouldHighlight);
   }
 
-  // Displays the toggle minimize/restore hotkey in the window header
   private async setToggleHotkeyText() {
     const gameClassId = await this.getCurrentGameClassId();
     const hotkeyText = await OWHotkeys.getHotkeyText(kHotkeys.toggle, gameClassId);
     const hotkeyElem = document.getElementById('hotkey');
-    hotkeyElem.textContent = hotkeyText;
+    if (hotkeyElem) hotkeyElem.textContent = hotkeyText;
   }
 
-  // Sets toggleInGameWindow as the behavior for the Ctrl+F hotkey
   private async setToggleHotkeyBehavior() {
     const toggleInGameWindow = async (
       hotkeyResult: overwolf.settings.hotkeys.OnPressedEvent
     ): Promise<void> => {
-      console.log(`pressed hotkey for ${hotkeyResult.name}`);
       const inGameState = await this.getWindowState();
 
       if (inGameState.window_state === WindowState.NORMAL ||
         inGameState.window_state === WindowState.MAXIMIZED) {
         this.currWindow.minimize();
-      } else if (inGameState.window_state === WindowState.MINIMIZED ||
-        inGameState.window_state === WindowState.CLOSED) {
+      } else {
         this.currWindow.restore();
       }
     }
@@ -108,19 +168,17 @@ class InGame extends AppWindow {
     OWHotkeys.onHotkeyDown(kHotkeys.toggle, toggleInGameWindow);
   }
 
-  // Appends a new line to the specified log
   private logLine(log: HTMLElement, data, highlight) {
+    if (!log) return;
+
     const line = document.createElement('pre');
-    line.textContent = JSON.stringify(data);
+    line.textContent = JSON.stringify(data, null, 2); 
 
     if (highlight) {
       line.className = 'highlight';
     }
 
-    // Check if scroll is near bottom
-    const shouldAutoScroll =
-      log.scrollTop + log.offsetHeight >= log.scrollHeight - 10;
-
+    const shouldAutoScroll = log.scrollTop + log.offsetHeight >= log.scrollHeight - 10;
     log.appendChild(line);
 
     if (shouldAutoScroll) {
@@ -130,9 +188,9 @@ class InGame extends AppWindow {
 
   private async getCurrentGameClassId(): Promise<number | null> {
     const info = await OWGames.getRunningGameInfo();
-
     return (info && info.isRunning && info.classId) ? info.classId : null;
   }
 }
 
+// Uygulamayı başlat
 InGame.instance().run();

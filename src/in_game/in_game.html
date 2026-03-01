@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <link rel="stylesheet" href="../../css/general.css" />
@@ -8,6 +9,7 @@
   <link rel="stylesheet" href="../../css/modal.css" />
   <title>Overwolf Sample App - In-Game page</title>
 </head>
+
 <body class="in-game">
   <!-- -------------------------------- Header ------------------------------- -->
 
@@ -27,6 +29,35 @@
 
   <!-- --------------------------------- Main -------------------------------- -->
   <main>
+
+
+
+<div id="aoe-dashboard" style="background: rgba(15, 20, 25, 0.9); border: 2px solid #c0392b; color: white; padding: 15px; border-radius: 8px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; width: 250px; user-select: none;">
+  <h3 style="margin-top:0; margin-bottom: 10px; color:#f1c40f; text-align: center; border-bottom: 1px solid #555; padding-bottom: 5px;">AoE 2 Asistanı</h3>
+  
+  <div id="status-text" style="margin-bottom: 15px; font-weight: bold; text-align: center; color: #bdc3c7;">Maç Bekleniyor...</div>
+  
+  <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+    <span>Skor:</span> <span id="val-score" style="color: #3498db; font-weight: bold;">0</span>
+  </div>
+  <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+    <span>Odun:</span> <span id="val-wood" style="color: #2ecc71; font-weight: bold;">0</span>
+  </div>
+  <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+    <span>Yemek:</span> <span id="val-food" style="color: #e74c3c; font-weight: bold;">0</span>
+  </div>
+  <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+    <span>Altın:</span> <span id="val-gold" style="color: #f1c40f; font-weight: bold;">0</span>
+  </div>
+  <div style="display: flex; justify-content: space-between;">
+    <span>Taş:</span> <span id="val-stone" style="color: #95a5a6; font-weight: bold;">0</span>
+  </div>
+</div>
+
+
+
+
+
     <div id="logs">
       <div id="events" class="logColumn">
         <h1>Game Events</h1>
@@ -69,4 +100,5 @@
     ga('send', 'pageview', '/in_game.html');
   </script>
 </body>
+
 </html>

@@ -233,6 +233,16 @@ export const kGamesFeatures = new Map<number, string[]>([
       'match_info'
     ]
   ],
+  // Age of Empires II: DE (Yeni ID)
+  [
+    21926,
+    [
+      'match_info',
+      'players',
+      'me',
+      'game_info'
+    ]
+  ],
 ]);
 
 export const kGameClassIds = Array.from(kGamesFeatures.keys());
