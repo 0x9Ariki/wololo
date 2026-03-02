@@ -1,0 +1,113 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background-image: url('arkaplan.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed; 
+}
+
+.kutu {
+  background-color: rgb(88, 11, 11); 
+  color: white;
+  width: 140px;
+  padding: 10px;
+  /* height: 60px; ← SİL, sabit yükseklik sorun çıkarır */
+  border-radius: 12px;
+  border: 1px solid #0f340f;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 13px;
+  line-height: 1.6;
+  word-wrap: break-word;
+ 
+}
+
+.kutu h2 {
+  color: azure;
+  margin: 0 0 6px 0; /* margin-top değil, margin olmalı */
+  font-size: 14px;
+  white-space: normal;
+}
+
+.kutu p { 
+  margin: 2px 0;
+  color: rgb(218, 218, 218);
+}
+.sayilar{
+ display: flex;
+    gap: 13px;
+    color: #1eff00;
+    margin: -30px 0px -10px ;
+    text-shadow: 0 0.1px 5px #1eff00;
+}
+
+.baslik{
+  color: rgb(221, 221, 221);
+  font-size: 15px;
+  font-weight: 700;
+  margin: -15px -3px -6px ;
+letter-spacing: 2px;
+font-family: 'Barlow Condensed', sans-serif;
+}
+.kutu3{
+  border: 1px solid #00d4ff;
+  
+  border-radius: 5px;
+   box-shadow: 0 0 15px rgba(0,212,255, 0.2), inset 0 0 15px rgba(0,212,255, 0.05);
+   width: 40px;
+   padding: 0px 13px;
+   font-family: 'Segoe UI', sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+  background-color: rgb(36, 35, 35);
+  background-image: "arkaplan.png";
+}
+.kutugeride{
+  border: 1px solid #e41809;
+   
+   box-shadow: 0 0 30px #ff2600, 0 0 60px rgba(0,212,255,0.3); /* Güçlü glow */
+   
+   border-radius: 5px;
+   box-shadow: 0 0 15px rgba(0,212,255, 0.2), inset 0 0 15px rgba(0,212,255, 0.05);
+   width: 40px;
+   padding: 0px 13px;
+   font-family: 'Segoe UI', sans-serif;
+   font-size: 13px;
+   line-height: 1.4;
+   background-color: rgb(36, 35, 35);
+   animation: pluse 2s infinite;
+   }
+   @keyframes pluse {
+  0%   { box-shadow: 0 0 5px rgba(255, 0, 0, 0.3); }
+  50%  { box-shadow: 0 0 20px rgba(255, 38, 0, 0.8), 0 0 40px rgba(255, 0, 0, 0.4); }
+  100% { box-shadow: 0 0 5px rgba(255, 0, 0, 0.3); }
+   }
+      @keyframes pluseyazi {
+  0%   { text-shadow: 0 0 2px rgba(255, 0, 0, 0.3); }
+  50%  { text-shadow: 0 0 6px rgba(255, 38, 0, 0.8), 0 0 40px rgba(255, 0, 0, 0.4); }
+  100% { text-align: 0 0 2px rgba(255, 0, 0, 0.3); }
+   }
+.hg{
+  text-shadow: 0 0.1px 5px #ee1606, ;
+  animation: pluseyazi 2s infinite;
+    color: rgb(221, 221, 221);
+  font-size: 15px;
+  font-weight: 700;
+  margin: -15px -3px -6px ;
+letter-spacing: 2px;
+font-family: 'Barlow Condensed', sans-serif;
+}
+.sayilargeride{
+  display: flex;
+    gap: 13px;
+    color: #ff0000;
+    margin: -30px 0px -10px ;
+    text-shadow: 0 0.1px 5px #ff0000;
+}

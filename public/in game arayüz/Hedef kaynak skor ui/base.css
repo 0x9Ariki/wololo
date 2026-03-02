@@ -1,0 +1,13 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh; /* height:100% yerine bu — her zaman tam ekran */
+}
+
+body {
+  background-image: url('arkaplan.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
