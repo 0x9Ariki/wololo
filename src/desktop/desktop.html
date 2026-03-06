@@ -52,16 +52,17 @@
       <div class="frame">
         <div class="cardFrame">
           <div id="cardHeader"> Oyuncu Derecesi ve Elosu </div>
-          <div id="card">
-            <img src="../../img/ranks/unranked.webp" alt="unranked" width="128" height="128">
-            <p id="rankedName">Deneyimsiz - Yeni Başlayan</p>
+          <div id="card" style="text-align: center;">
+            <img id="rankImage" src="../../img/ranks/unranked.webp" alt="unranked" width="128" height="128">
+            <p id="rankedName" style="margin-bottom: 5px;">...</p>
+            <p id="eloValue" style="font-weight: bold; color: #f1c40f; margin-top: 0; font-size: 18px;">Elo: ...</p>
           </div>
         </div>
 
         <div class="cardFrame">
-          <div id="cardHeader"> Medeniyet İstatistikleri </div>
-          <div id="civStatsContainer">
-            <p style="color: gray; text-align: center; margin-top: 10px;">Veriler Yükleniyor...</p>
+          <div id="cardHeader"> Son Maç Geçmişi </div>
+          <div id="matchHistoryContainer">
+            <p style="color: gray; text-align: center; margin-top: 10px;">Maçlar Yükleniyor...</p>
           </div>
         </div>
       </div>
@@ -72,6 +73,13 @@
           <div id="card">
             <p id="tag">yeni başlayan</p>
             <p id="tag">hun seven</p>
+          </div>
+        </div>
+
+        <div class="cardFrame">
+          <div id="cardHeader"> Medeniyet İstatistikleri </div>
+          <div id="civStatsContainer">
+            <p style="color: gray; text-align: center; margin-top: 10px;">Veriler Yükleniyor...</p>
           </div>
         </div>
       </div>

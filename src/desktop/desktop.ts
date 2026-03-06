@@ -26,6 +26,8 @@ export class DesktopMenu {
         // Harika! ID zaten biliniyor, arama yapma, DİREKT İSTATİSTİKLERİ ÇEK!
         console.log("AoE2 ID biliniyor, istatistikler çekiliyor...");
         this.fetchCivStats(savedAoe2Id);
+        this.fetchEloStats(savedAoe2Id);
+        this.fetchMatchHistory(savedAoe2Id);
       } else {
         // Sadece uygulama ilk kurulduğunda 1 kere çalışır
         console.log("AoE2 ID ilk kez aranıyor...");
@@ -58,7 +60,7 @@ export class DesktopMenu {
             console.log("Yeni Steam ID yakalandı:", steamId);
             localStorage.setItem("aoe2_steam_id", steamId);
             this.fetchSteamProfile(steamId);
-            this.fetchAoe2ProfileId(steamId); // Yeni ID bulunduğunda AoE2 ID'sini de bul
+            this.fetchAoe2ProfileId(steamId);
           }
         }
       }
@@ -124,6 +126,8 @@ export class DesktopMenu {
 
         // Bulunca hemen medeniyet verilerini çek
         this.fetchCivStats(aoe2Id);
+        this.fetchEloStats(aoe2Id);
+        this.fetchMatchHistory(aoe2Id);
       } else {
         if (insightsEl) insightsEl.innerText = "AoE2 ID Bulunamadı";
       }
@@ -167,6 +171,171 @@ export class DesktopMenu {
       console.error("Medeniyet istatistikleri işlenirken hata:", error);
       const container = document.getElementById("civStatsContainer");
       if (container) container.innerHTML = "<p style='color:red;'>Veriler yüklenemedi.</p>";
+    }
+  }
+
+  // --- 4. ELO VE DERECE İSTATİSTİKLERİNİ ÇEKEN FONKSİYON ---
+  private async fetchEloStats(aoe2Id: string) {
+    try {
+      // "4" ID'si genellikle 1v1 RM (Rastgele Harita) modunu temsil eder
+      const targetUrl = `https://www.aoe2insights.com/user/${aoe2Id}/elo-history/4/`;
+      const response = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`);
+
+      if (!response.ok) throw new Error("Elo verilerine ulaşılamadı.");
+
+      const eloData = await response.json();
+
+      // Eğer veri boşsa (oyuncu hiç 1v1 dereceli atmamışsa)
+      if (!eloData || eloData.length === 0) {
+        this.updateRankUI("unranked", "Derecesiz (Unranked)", "Elo: Yok");
+        return;
+      }
+
+      // Dizinin EN SONUNDAKİ elemanı alıyoruz (Güncel Elo)
+      const lastRecord = eloData[eloData.length - 1];
+      const currentElo = lastRecord.y;
+
+      // Elo'ya göre rank belirleme mantığı (Sayıları kendine göre ayarlayabilirsin)
+      let rankIcon = "unranked";
+      let rankName = "Deneyimsiz - Yeni Başlayan";
+
+      if (currentElo > 0 && currentElo < 900) {
+        rankIcon = "wood";
+        rankName = "Wood";
+      } else if (currentElo >= 900 && currentElo < 1100) {
+        rankIcon = "silver";
+        rankName = "Silver";
+      } else if (currentElo >= 1100 && currentElo < 1300) {
+        rankIcon = "gold";
+        rankName = "Gold";
+      } else if (currentElo >= 1300 && currentElo < 1500) {
+        rankIcon = "plat";
+        rankName = "Platinum";
+      } else if (currentElo >= 1500 && currentElo < 1700) {
+        rankIcon = "diamond";
+        rankName = "Diamond";
+      } else if (currentElo >= 1700) {
+        rankIcon = "cha";
+        rankName = "Challenger";
+      }
+
+      // Bulduğumuz verileri arayüze basıyoruz
+      this.updateRankUI(rankIcon, rankName, `Elo: ${currentElo}`);
+
+    } catch (error) {
+      console.error("Elo verisi çekilirken hata:", error);
+      this.updateRankUI("unranked", "Veri Alınamadı", "Elo: ?");
+    }
+  }
+
+  // Arayüzdeki resim ve metinleri güncelleyen yardımcı fonksiyon
+  private updateRankUI(icon: string, name: string, eloText: string) {
+    const rankImgEl = document.getElementById("rankImage") as HTMLImageElement;
+    const rankNameEl = document.getElementById("rankedName");
+    const eloValueEl = document.getElementById("eloValue");
+
+    // Resmin kaynağını dinamik olarak belirliyoruz (örn: silver -> silver.webp)
+    if (rankImgEl) rankImgEl.src = `../../img/ranks/${icon}.webp`;
+    if (rankNameEl) rankNameEl.innerText = name;
+    if (eloValueEl) eloValueEl.innerText = eloText;
+  }
+
+  // --- 5. MAÇ GEÇMİŞİNİ ÇEKEN VE PARÇALAYAN FONKSİYON ---
+  private async fetchMatchHistory(aoe2Id: string) {
+    try {
+      // Ana profil sayfasını çekiyoruz (Maç geçmişi burada bulunuyor)
+      const targetUrl = `https://www.aoe2insights.com/user/${aoe2Id}/`;
+      const response = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`);
+      
+      if (!response.ok) throw new Error("Maç geçmişi sayfasına ulaşılamadı.");
+      
+      // Sayfayı metin olarak alıp sanal bir HTML (DOM) ortamına kuruyoruz
+      const htmlText = await response.text();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(htmlText, "text/html");
+
+      const container = document.getElementById("matchHistoryContainer");
+      if (!container) return;
+
+      // Sayfadaki tüm maç bloklarını bul
+      const matchTiles = doc.querySelectorAll(".match-tile");
+      if (matchTiles.length === 0) {
+         container.innerHTML = "<p style='text-align:center;'>Maç geçmişi bulunamadı.</p>";
+         return;
+      }
+
+      container.innerHTML = ""; // Yükleniyor yazısını temizle
+
+      // Sadece en son 5 maçı alalım ki ekran çok uzamasın (sayıyı değiştirebilirsin)
+      const recentMatches = Array.from(matchTiles).slice(0, 5);
+
+      recentMatches.forEach(tile => {
+        // Harita Adı
+        const mapEl = tile.querySelector(".match-map");
+        const mapName = mapEl ? mapEl.textContent?.trim() : "Bilinmeyen Harita";
+
+        // Maç Süresi
+        const clockIcon = tile.querySelector(".fa-clock");
+        const duration = clockIcon?.parentElement ? clockIcon.parentElement.textContent?.trim() : "Süre Yok";
+
+        // Ne Zaman Oynandı (örn: 23 hours ago)
+        const timeAgoEl = tile.querySelector(".match-meta span[title]");
+        const timeAgo = timeAgoEl ? timeAgoEl.textContent?.trim() : "";
+
+        // === BÜYÜLÜ KISIM: KULLANICIYI BULMA ===
+        // 8 oyuncu arasından aoe2Id'sine sahip olan kişiyi (seni) buluyoruz
+        const userLink = tile.querySelector(`a[href*="/user/${aoe2Id}/"]`);
+        
+        let isWin = false;
+        let civName = "Bilinmiyor";
+        let civIconStr = "unranked"; 
+
+        if (userLink) {
+            // Kullanıcının takımını bul. Takımda 'won' class'ı varsa kazanmıştır!
+            const teamEl = userLink.closest(".team");
+            if (teamEl && teamEl.classList.contains("won")) {
+                isWin = true;
+            }
+
+            // Kullanıcının bulunduğu satırı bulup oynadığı medeniyeti çek
+            const playerRow = userLink.closest(".team-player");
+            if (playerRow) {
+                const civIconEl = playerRow.querySelector(".image-icon");
+                if (civIconEl) {
+                    civName = civIconEl.getAttribute("title") || "Bilinmiyor";
+                    civIconStr = civName.toLowerCase().replace(" ", "_"); // "Sicilians" -> "sicilians"
+                }
+            }
+        }
+
+        // Tasarımı duruma göre ayarla (Kazandıysa Yeşil, Kaybettiyse Kırmızı)
+        const resultColor = isWin ? "#2ecc71" : "#e74c3c";
+        const resultText = isWin ? "Galibiyet" : "Mağlubiyet";
+
+        // Senin mevcut tasarım diline uygun şık bir maç listesi ögesi oluşturuyoruz
+        const matchHtml = `
+          <div style="background: rgba(0,0,0,0.2); border-left: 4px solid ${resultColor}; padding: 10px; margin-bottom: 8px; border-radius: 4px; display: flex; align-items: center; justify-content: space-between;">
+             <div style="display: flex; align-items: center;">
+                <img src="../../img/civs/${civIconStr}.webp" alt="${civName}" style="width: 40px; height: 40px; margin-right: 12px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.5);">
+                <div>
+                   <div style="font-weight: bold; font-size: 15px; color: #fff;">${mapName}</div>
+                   <div style="font-size: 12px; color: #a0a0a0;">${civName}</div>
+                </div>
+             </div>
+             <div style="text-align: right;">
+                <div style="font-weight: bold; color: ${resultColor}; font-size: 14px;">${resultText}</div>
+                <div style="font-size: 11px; color: #888; margin-top: 2px;">${duration} • ${timeAgo}</div>
+             </div>
+          </div>
+        `;
+        
+        container.innerHTML += matchHtml;
+      });
+
+    } catch (error) {
+      console.error("Maç geçmişi çekilirken hata:", error);
+      const container = document.getElementById("matchHistoryContainer");
+      if (container) container.innerHTML = "<p style='color:red;'>Geçmiş yüklenemedi.</p>";
     }
   }
 }
