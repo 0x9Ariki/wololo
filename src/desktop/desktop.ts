@@ -240,16 +240,14 @@ export class DesktopMenu {
     if (eloValueEl) eloValueEl.innerText = eloText;
   }
 
-  // --- 5. MAÇ GEÇMİŞİNİ ÇEKEN VE PARÇALAYAN FONKSİYON ---
+  // --- 5. MAÇ GEÇMİŞİNİ ÇEKEN VE TAKIMLARI PARÇALAYAN FONKSİYON ---
   private async fetchMatchHistory(aoe2Id: string) {
     try {
-      // Ana profil sayfasını çekiyoruz (Maç geçmişi burada bulunuyor)
       const targetUrl = `https://www.aoe2insights.com/user/${aoe2Id}/`;
       const response = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`);
-      
+
       if (!response.ok) throw new Error("Maç geçmişi sayfasına ulaşılamadı.");
-      
-      // Sayfayı metin olarak alıp sanal bir HTML (DOM) ortamına kuruyoruz
+
       const htmlText = await response.text();
       const parser = new DOMParser();
       const doc = parser.parseFromString(htmlText, "text/html");
@@ -257,78 +255,116 @@ export class DesktopMenu {
       const container = document.getElementById("matchHistoryContainer");
       if (!container) return;
 
-      // Sayfadaki tüm maç bloklarını bul
       const matchTiles = doc.querySelectorAll(".match-tile");
       if (matchTiles.length === 0) {
-         container.innerHTML = "<p style='text-align:center;'>Maç geçmişi bulunamadı.</p>";
-         return;
+        container.innerHTML = "<p style='text-align:center; color:#ccc;'>Maç geçmişi bulunamadı.</p>";
+        return;
       }
 
-      container.innerHTML = ""; // Yükleniyor yazısını temizle
+      container.innerHTML = "";
 
-      // Sadece en son 5 maçı alalım ki ekran çok uzamasın (sayıyı değiştirebilirsin)
+      // Son 5 maçı gösteriyoruz
       const recentMatches = Array.from(matchTiles).slice(0, 5);
 
       recentMatches.forEach(tile => {
-        // Harita Adı
+        // Harita Adı ve Süre
         const mapEl = tile.querySelector(".match-map");
         const mapName = mapEl ? mapEl.textContent?.trim() : "Bilinmeyen Harita";
 
-        // Maç Süresi
         const clockIcon = tile.querySelector(".fa-clock");
-        const duration = clockIcon?.parentElement ? clockIcon.parentElement.textContent?.trim() : "Süre Yok";
+        const duration = clockIcon?.parentElement ? clockIcon.parentElement.textContent?.trim() : "";
 
-        // Ne Zaman Oynandı (örn: 23 hours ago)
-        const timeAgoEl = tile.querySelector(".match-meta span[title]");
-        const timeAgo = timeAgoEl ? timeAgoEl.textContent?.trim() : "";
-
-        // === BÜYÜLÜ KISIM: KULLANICIYI BULMA ===
-        // 8 oyuncu arasından aoe2Id'sine sahip olan kişiyi (seni) buluyoruz
-        const userLink = tile.querySelector(`a[href*="/user/${aoe2Id}/"]`);
-        
+        // Takımları Ayrıştırma Mantığı
+        const teamNodes = tile.querySelectorAll(".team");
+        let myTeam: any = null;
+        let enemyTeams: any[] = [];
         let isWin = false;
-        let civName = "Bilinmiyor";
-        let civIconStr = "unranked"; 
 
-        if (userLink) {
-            // Kullanıcının takımını bul. Takımda 'won' class'ı varsa kazanmıştır!
-            const teamEl = userLink.closest(".team");
-            if (teamEl && teamEl.classList.contains("won")) {
-                isWin = true;
+        // Her bir takımı döngüye sok
+        teamNodes.forEach(teamNode => {
+          let isMyTeam = false;
+          let hasWon = teamNode.classList.contains("won");
+          let playersData: any[] = [];
+
+          // Takımdaki her bir oyuncuyu döngüye sok
+          const playerNodes = teamNode.querySelectorAll("li");
+          playerNodes.forEach(pNode => {
+            const userLinkEl = pNode.querySelector(".user-link a");
+            const playerName = userLinkEl ? userLinkEl.textContent?.trim() : "Bilinmiyor";
+            const playerHref = userLinkEl ? userLinkEl.getAttribute("href") : "";
+
+            const civIconEl = pNode.querySelector(".image-icon");
+            const civName = civIconEl ? (civIconEl.getAttribute("title") || "Bilinmiyor") : "Bilinmiyor";
+            const civIconStr = civName.toLowerCase().replace(/ /g, "_"); // Boşlukları alt çizgi yap (örn: Teutons)
+
+            // Bu oyuncu biz miyiz?
+            const isMe = playerHref && playerHref.includes(`/user/${aoe2Id}/`);
+            if (isMe) {
+              isMyTeam = true;
+              isWin = hasWon; // Bizim takım kazandıysa maçı kazanmışızdır
             }
 
-            // Kullanıcının bulunduğu satırı bulup oynadığı medeniyeti çek
-            const playerRow = userLink.closest(".team-player");
-            if (playerRow) {
-                const civIconEl = playerRow.querySelector(".image-icon");
-                if (civIconEl) {
-                    civName = civIconEl.getAttribute("title") || "Bilinmiyor";
-                    civIconStr = civName.toLowerCase().replace(" ", "_"); // "Sicilians" -> "sicilians"
-                }
-            }
-        }
+            playersData.push({ name: playerName, civName, civIconStr, isMe });
+          });
 
-        // Tasarımı duruma göre ayarla (Kazandıysa Yeşil, Kaybettiyse Kırmızı)
+          const teamObj = { hasWon, playersData };
+
+          // Bizim takım mı yoksa rakip mi ayır
+          if (isMyTeam) {
+            myTeam = teamObj;
+          } else {
+            enemyTeams.push(teamObj);
+          }
+        });
+
         const resultColor = isWin ? "#2ecc71" : "#e74c3c";
         const resultText = isWin ? "Galibiyet" : "Mağlubiyet";
 
-        // Senin mevcut tasarım diline uygun şık bir maç listesi ögesi oluşturuyoruz
-        const matchHtml = `
-          <div style="background: rgba(0,0,0,0.2); border-left: 4px solid ${resultColor}; padding: 10px; margin-bottom: 8px; border-radius: 4px; display: flex; align-items: center; justify-content: space-between;">
-             <div style="display: flex; align-items: center;">
-                <img src="../../img/civs/${civIconStr}.webp" alt="${civName}" style="width: 40px; height: 40px; margin-right: 12px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.5);">
-                <div>
-                   <div style="font-weight: bold; font-size: 15px; color: #fff;">${mapName}</div>
-                   <div style="font-size: 12px; color: #a0a0a0;">${civName}</div>
+        // Oyuncuları HTML'e dönüştüren yardımcı fonksiyon (Küçük, yan yana)
+        const renderPlayers = (players: any[]) => {
+          return players.map(p => `
+                <div style="display: flex; align-items: center; margin-bottom: 3px;">
+                    <img src="../../img/civs/${p.civIconStr}.webp" title="${p.civName}" style="width: 18px; height: 18px; border-radius: 2px; margin-right: 5px;">
+                    <span style="font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80px; color: ${p.isMe ? '#f1c40f' : '#dcdde1'}; font-weight: ${p.isMe ? 'bold' : 'normal'};">
+                        ${p.name}
+                    </span>
                 </div>
+            `).join("");
+        };
+
+        const myTeamHtml = myTeam ? renderPlayers(myTeam.playersData) : "";
+
+        // Eğer 3lü veya 4lü FFA maçları varsa rakipleri alt alta birleştirir
+        const enemyHtml = enemyTeams.map(t => renderPlayers(t.playersData)).join('<div style="height:1px; background:rgba(255,255,255,0.1); margin:3px 0;"></div>');
+
+        // Yeni Gelişmiş Kompakt Kart Tasarımı
+        const matchHtml = `
+          <div style="background: rgba(15, 20, 25, 0.7); border-left: 4px solid ${resultColor}; padding: 8px; margin-bottom: 8px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.4);">
+             
+             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px; margin-bottom: 6px;">
+                 <span style="font-weight: bold; font-size: 12px; color: #fff;">${mapName}</span>
+                 <span style="font-weight: bold; font-size: 12px; color: ${resultColor};">${resultText}</span>
+                 <span style="font-size: 10px; color: #888;">${duration}</span>
              </div>
-             <div style="text-align: right;">
-                <div style="font-weight: bold; color: ${resultColor}; font-size: 14px;">${resultText}</div>
-                <div style="font-size: 11px; color: #888; margin-top: 2px;">${duration} • ${timeAgo}</div>
+             
+             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                 
+                 <div style="flex: 1; min-width: 0;">
+                    <div style="font-size: 9px; color: #7f8c8d; margin-bottom: 3px; text-transform: uppercase;">Bizim Takım</div>
+                    ${myTeamHtml}
+                 </div>
+                 
+                 <div style="font-size: 10px; font-weight: bold; color: #555; padding: 0 5px; align-self: center;">VS</div>
+                 
+                 <div style="flex: 1; min-width: 0;">
+                    <div style="font-size: 9px; color: #7f8c8d; margin-bottom: 3px; text-transform: uppercase;">Rakip</div>
+                    ${enemyHtml}
+                 </div>
+                 
              </div>
           </div>
         `;
-        
+
         container.innerHTML += matchHtml;
       });
 
