@@ -38,6 +38,20 @@ export class TelemetryWatcher {
 
         overwolf.io.readTextFile(filePath, options, (result) => {
             if (result.success && result.content) {
+                
+                // === YENİ EKLENEN KISIM: OYUN İÇİNDEYKEN STEAM ID YAKALAYICI ===
+                // Telemetri dosyası okunurken içinde UserId geçerse hemen hafızaya alıyoruz
+                const match = result.content.match(/"UserId":"(\d+)"/);
+                if (match && match[1]) {
+                    const currentSavedId = localStorage.getItem("aoe2_steam_id");
+                    // Eğer hafızadakinden farklıysa veya ilk defa bulduysa kaydet
+                    if (currentSavedId !== match[1]) {
+                        console.log("[TelemetryWatcher] Steam ID Oyun İçinde Yakalandı ve Kaydedildi:", match[1]);
+                        localStorage.setItem("aoe2_steam_id", match[1]);
+                    }
+                }
+                // ===============================================================
+
                 this.parseLogContent(result.content, callback);
             } else {
                 // Sessiz hataları yakalıyoruz! 

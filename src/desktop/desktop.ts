@@ -11,25 +11,31 @@ export class DesktopMenu {
     this.initProfile();
   }
 
-  // Profil başlatma mantığı
+  // SADELEŞTİRİLMİŞ BAŞLATMA MANTIĞI
   private initProfile() {
+    // 1. TelemetryWatcher'ın oyun içindeyken kaydettiği ID'leri hafızadan al
     const savedSteamId = localStorage.getItem("aoe2_steam_id");
     const savedAoe2Id = localStorage.getItem("aoe2_profile_id");
 
     if (savedSteamId) {
-      console.log("Hafızadan Steam ID bulundu:", savedSteamId);
+      console.log("Hafızadan Steam ID bulundu, profil güncelleniyor...");
+      // İsim veya resim değişmiş olabilir diye her açılışta Steam verisini tazele
       this.fetchSteamProfile(savedSteamId);
-      
-      // Eğer AoE2 ID'si de daha önce kaydedilmişse direkt civ verilerini çek
-      if (savedAoe2Id) {
-         this.fetchCivStats(savedAoe2Id);
-      } else {
-         this.fetchAoe2ProfileId(savedSteamId);
-      }
-    }
 
-    // Her halükarda log dosyasını tarayıp ID'yi güncellemeye çalışıyoruz
-    this.scanLogForSteamId();
+      if (savedAoe2Id) {
+        // Harika! ID zaten biliniyor, arama yapma, DİREKT İSTATİSTİKLERİ ÇEK!
+        console.log("AoE2 ID biliniyor, istatistikler çekiliyor...");
+        this.fetchCivStats(savedAoe2Id);
+      } else {
+        // Sadece uygulama ilk kurulduğunda 1 kere çalışır
+        console.log("AoE2 ID ilk kez aranıyor...");
+        this.fetchAoe2ProfileId(savedSteamId);
+      }
+    } else {
+      console.log("Henüz Steam ID bulunamadı. Lütfen oyuna bir kez giriş yapın.");
+      const container = document.getElementById("civStatsContainer");
+      if (container) container.innerHTML = "<p style='color:#f39c12;'>Verileri görmek için oyuna bir kez giriş yapmalısınız.</p>";
+    }
   }
 
   // Log dosyasından Steam ID arama
@@ -59,17 +65,18 @@ export class DesktopMenu {
     });
   }
 
-  // Steam XML Profilini Çekme (AllOrigins Proxy ile)
+  // --- 1. STEAM PROFİLİNİ ÇEKEN FONKSİYON ---
   private async fetchSteamProfile(steamId: string) {
     try {
-      const targetUrl = encodeURIComponent(`https://steamcommunity.com/profiles/${steamId}/?xml=1`);
-      const response = await fetch(`https://api.allorigins.win/get?url=${targetUrl}`);
-      
+      const targetUrl = `https://steamcommunity.com/profiles/${steamId}/?xml=1`;
+      // Yeni proxy'miz: codetabs
+      const response = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`);
+
       if (!response.ok) throw new Error("Steam profiline ulaşılamadı.");
-      
-      const data = await response.json();
-      const xmlText = data.contents;
-      
+
+      // Codetabs veriyi bozmadan doğrudan RAW (saf) metin olarak verir, contents'e gerek yok!
+      const xmlText = await response.text();
+
       const parser = new DOMParser();
       const xmlDoc = parser.parseFromString(xmlText, "text/xml");
 
@@ -90,70 +97,69 @@ export class DesktopMenu {
     }
   }
 
-  // Steam ID'den aoe2insights Profile ID'sini çıkarma
+  // --- 2. AOE2 PROFILE ID BULUCU FONKSİYON ---
   private async fetchAoe2ProfileId(steamId: string) {
     try {
-      const searchUrl = encodeURIComponent(`https://www.aoe2insights.com/search/?q=${steamId}`);
-      const response = await fetch(`https://api.allorigins.win/get?url=${searchUrl}`);
-      
+      const targetUrl = `https://www.aoe2insights.com/search/?q=${steamId}`;
+      const response = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`);
+
       if (!response.ok) throw new Error("AoE2Insights araması başarısız.");
-      
-      const data = await response.json();
-      const match = data.contents.match(/\/user\/(\d+)\//);
-      
+
+      // Doğrudan saf HTML geliyor
+      const htmlContent = await response.text();
+      const match = htmlContent.match(/\/user\/(\d+)\//);
+
+      const insightsEl = document.getElementById('profile-insights-id');
+
       if (match && match[1]) {
         const aoe2Id = match[1];
-        console.log("AoE2 ID bulundu ve kaydedildi:", aoe2Id);
+        console.log("AoE2 Profile ID Başarıyla Söküldü:", aoe2Id);
+
         localStorage.setItem("aoe2_profile_id", aoe2Id);
-        
-        // ID'yi bulur bulmaz medeniyet istatistiklerini de çekiyoruz!
+
+        if (insightsEl) {
+          insightsEl.innerText = `AoE2 ID: ${aoe2Id}`;
+          insightsEl.style.color = "#2ecc71";
+        }
+
+        // Bulunca hemen medeniyet verilerini çek
         this.fetchCivStats(aoe2Id);
+      } else {
+        if (insightsEl) insightsEl.innerText = "AoE2 ID Bulunamadı";
       }
     } catch (error) {
       console.error("AoE2 ID çekilirken hata:", error);
     }
   }
 
-  // YENİ: JSON verisini alıp HTML'e kart olarak basan fonksiyon
+  // --- 3. MEDENİYET İSTATİSTİKLERİNİ ÇEKEN FONKSİYON ---
   private async fetchCivStats(aoe2Id: string) {
     try {
-      // JSON verisini döndüren hedefin URL'si
-      const targetUrl = encodeURIComponent(`https://www.aoe2insights.com/user/${aoe2Id}/civ-stats/`);
-      
-      // CORS sorununu aşmak için yine proxy kullanıyoruz
-      const response = await fetch(`https://api.allorigins.win/get?url=${targetUrl}`);
-      
+      const targetUrl = `https://www.aoe2insights.com/user/${aoe2Id}/civ-stats/`;
+      const response = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`);
+
       if (!response.ok) throw new Error("Medeniyet verilerine ulaşılamadı.");
-      
-      const data = await response.json();
-      
-      // Proxy bize içeriği string olarak veriyor, bunu tekrar JSON objesine (Diziye) çeviriyoruz
-      const civArray = JSON.parse(data.contents);
+
+      // Codetabs veriyi doğrudan JSON dizisi olarak verdiği için JSON.parse ile uğraşmıyoruz!
+      const civArray = await response.json();
 
       const container = document.getElementById("civStatsContainer");
       if (!container) return;
 
-      // Konteynerin içindeki "Yükleniyor..." yazısını temizle
       container.innerHTML = "";
 
-      // Gelen diziyi döngüye sokup her bir medeniyet için bir HTML bloku oluşturuyoruz
-      // Sadece en çok oynanan 5 tanesini (veya hepsini istersen slice'ı kaldırabilirsin) listeleyelim
       const topCivs = civArray.slice(0, 5);
 
       topCivs.forEach((civ: any) => {
-        // Senin CSS/Tasarım yapına uygun div oluşturuluyor
         const civCardHtml = `
           <div class="civCard" style="display: flex; align-items: center; margin-bottom: 8px;">
             <img src="../../img/civs/${civ.icon}.webp" alt="${civ.name}" height="64" width="64">
-            
             <div class="civAlt" style="margin-left: 12px;">
               <p class="civName" style="margin: 0; font-weight: bold;">${civ.name}</p>
               <p class="civMatchCount" style="margin: 0; font-size: 14px; color: #a0a0a0;">Maç: ${civ.count}</p>
             </div>
           </div>
         `;
-        
-        // Oluşturulan HTML blokunu ana konteynerin içine ekle
         container.innerHTML += civCardHtml;
       });
 
