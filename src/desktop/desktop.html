@@ -8,84 +8,109 @@
   <link rel="stylesheet" href="../../css/desktop.css" />
   <link rel="stylesheet" href="../../css/modal.css" />
   <title>Wololo - Desktop Window</title>
+  
+<style>
+    /* Menü linkleri için stiller (Sende zaten var) */
+    .section-links { display: flex; gap: 15px; margin-left: 20px; flex-grow: 1; }
+    .section-links a { color: #8f98a0; text-decoration: none; font-weight: bold; font-size: 14px; transition: color 0.2s; cursor: pointer; }
+    .section-links a:hover { color: #fff; }
+    .section-links a.active { color: #66c0f4; border-bottom: 2px solid #66c0f4; padding-bottom: 2px; }
+
+    /* YENİ: Animasyon için gereken sihirli ayar */
+    .tab-content {
+      transition: opacity 0.2s ease-in-out; 
+      opacity: 0; /* Varsayılan olarak şeffaf başlarlar, JS görünür yapacak */
+    }
+  </style>
 </head>
 
 <body class="desktop">
-  <!-- -------------------------------- Header ------------------------------- -->
+  <header id="header" class="app-header" style="display: flex; align-items: center; padding: 0 15px;">
+    <img src="../../img/relic.webp" width="35" height="35" style="margin-right: 10px;" />
+    <h1 style="margin: 0; font-size: 18px;">Wololo</h1>
+    
+    <div class="section-links">
+      <a id="nav-home" class="active">Ana Sayfa</a>
+      <a id="nav-civ">Civ Meta</a>
+      <a id="nav-leaderboard">Leaderboard</a>
+    </div>
 
-  <header id="header" class="app-header">
-    <img src="../../img/relic.webp" width="35" height="35" />
-    <h1>Wololo</h1>
     <div class="window-controls-group">
-      <button id="minimizeButton" class="window-control window-control-minimize" />
-      <button id="maximizeButton" class="window-control window-control-maximize" />
-      <button id="closeButton" class="window-control window-control-close" />
+      <button id="minimizeButton" class="window-control window-control-minimize"></button>
+      <button id="maximizeButton" class="window-control window-control-maximize"></button>
+      <button id="closeButton" class="window-control window-control-close"></button>
     </div>
   </header>
 
-  <!-- --------------------------------- Main -------------------------------- -->
-  <main>
-    <div class="cardFrame">
-      <div id="steam-profile-card"
-        style="display: flex; align-items: center; background: #1b2838; padding: 20px; border-radius: 12px; color: white; width: 350px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
+  <main style="padding: 20px;">
+    
+    <div id="view-home" class="tab-content">
+      <div class="cardFrame">
+        <div id="steam-profile-card"
+          style="display: flex; align-items: center; background: #1b2838; padding: 20px; border-radius: 12px; color: white; width: 350px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
 
-        <img id="profile-avatar"
-          src="https://community.cloudflare.steamstatic.com/public/shared/images/responsive/share_steam_logo.png"
-          style="width: 80px; height: 80px; border-radius: 12px; margin-right: 20px; border: 2px solid #66c0f4;">
+          <img id="profile-avatar"
+            src="https://community.cloudflare.steamstatic.com/public/shared/images/responsive/share_steam_logo.png"
+            style="width: 80px; height: 80px; border-radius: 12px; margin-right: 20px; border: 2px solid #66c0f4;">
 
-        <div style="display: flex; flex-direction: column;">
-          <span style="font-size: 14px; color: #8f98a0; margin-bottom: 2px;">Hoş Geldin,</span>
-          <span id="profile-name" style="font-size: 22px; font-weight: bold; color: #66c0f4;">Oyuncu Aranıyor...</span>
+          <div style="display: flex; flex-direction: column;">
+            <span style="font-size: 14px; color: #8f98a0; margin-bottom: 2px;">Hoş Geldin,</span>
+            <span id="profile-name" style="font-size: 22px; font-weight: bold; color: #66c0f4;">Oyuncu Aranıyor...</span>
 
-          <div style="display: flex; align-items: center; margin-top: 5px;">
-            <span style="font-size: 16px; margin-right: 5px;">📍</span>
-            <span id="profile-location" style="font-size: 14px; color: #c7d5e0;">Konum Bilinmiyor</span>
+            <div style="display: flex; align-items: center; margin-top: 5px;">
+              <span style="font-size: 16px; margin-right: 5px;">📍</span>
+              <span id="profile-location" style="font-size: 14px; color: #c7d5e0;">Konum Bilinmiyor</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; margin-top: 15px;">
+        <div class="frame">
+          <div class="cardFrame">
+            <div id="cardHeader"> Oyuncu Derecesi ve Elosu </div>
+            <div id="card" style="text-align: center;">
+              <img id="rankImage" src="../../img/ranks/unranked.webp" alt="unranked" width="128" height="128">
+              <p id="rankedName" style="margin-bottom: 5px;">...</p>
+              <p id="eloValue" style="font-weight: bold; color: #f1c40f; margin-top: 0; font-size: 18px;">Elo: ...</p>
+            </div>
+          </div>
+
+          <div class="cardFrame">
+            <div id="cardHeader"> Son Maç Geçmişi </div>
+            <div id="matchHistoryContainer">
+              <p style="color: gray; text-align: center; margin-top: 10px;">Maçlar Yükleniyor...</p>
+            </div>
           </div>
         </div>
 
+        <div class="frame">
+          <div class="cardFrame">
+            <div id="cardHeader"> Oyuncu Etiketleri </div>
+            <div id="card">
+              <p class="tag">yeni başlayan</p>
+              <p class="tag">hun seven</p>
+            </div>
+          </div>
+
+          <div class="cardFrame">
+            <div id="cardHeader"> Medeniyet İstatistikleri </div>
+            <div id="civStatsContainer">
+              <p style="color: gray; text-align: center; margin-top: 10px;">Veriler Yükleniyor...</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-
-
-
-    <div style="display: flex;">
-      <div class="frame">
-        <div class="cardFrame">
-          <div id="cardHeader"> Oyuncu Derecesi ve Elosu </div>
-          <div id="card" style="text-align: center;">
-            <img id="rankImage" src="../../img/ranks/unranked.webp" alt="unranked" width="128" height="128">
-            <p id="rankedName" style="margin-bottom: 5px;">...</p>
-            <p id="eloValue" style="font-weight: bold; color: #f1c40f; margin-top: 0; font-size: 18px;">Elo: ...</p>
-          </div>
-        </div>
-
-        <div class="cardFrame">
-          <div id="cardHeader"> Son Maç Geçmişi </div>
-          <div id="matchHistoryContainer">
-            <p style="color: gray; text-align: center; margin-top: 10px;">Maçlar Yükleniyor...</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="frame">
-        <div class="cardFrame">
-          <div id="cardHeader"> Oyuncu Etiketleri </div>
-          <div id="card">
-            <p id="tag">yeni başlayan</p>
-            <p id="tag">hun seven</p>
-          </div>
-        </div>
-
-        <div class="cardFrame">
-          <div id="cardHeader"> Medeniyet İstatistikleri </div>
-          <div id="civStatsContainer">
-            <p style="color: gray; text-align: center; margin-top: 10px;">Veriler Yükleniyor...</p>
-          </div>
-        </div>
-      </div>
+    <div id="view-civ" class="tab-content" style="display: none;">
+      <h2 style="color: white;">Civ Meta Sayfası</h2>
+      <p style="color: #a0a0a0;">Buraya en yüksek kazanma oranına sahip medeniyetlerin istatistikleri gelecek.</p>
     </div>
-
-  </main>
+    <div id="view-leaderboard" class="tab-content" style="display: none;">
+      <h2 style="color: white;">Global Leaderboard</h2>
+      <p style="color: #a0a0a0;">Buraya TheViper, Hera gibi en iyi oyuncuların sıralama listesi gelecek.</p>
+    </div>
+    </main>
 
   <script>
     // Standard Google Universal Analytics code
@@ -95,12 +120,9 @@
       },
         i[r].l = 1 * new Date(); a = s.createElement(o),
           m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-      // Note: https protocol here
     })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
     ga('create', 'UA-144253676-3', 'auto');
-
-    // Removes failing protocol check. @see: http://stackoverflow.com/a/22152353/1958200
     ga('set', 'checkProtocolTask', function () { });
     ga('require', 'displayfeatures');
     ga('send', 'pageview', '/desktop.html');

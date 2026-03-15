@@ -8,7 +8,61 @@ export class DesktopMenu {
   private logPath = "C:/Users/scray/Games/Age of Empires 2 DE/telemetry/TelemetryEventsHighPriority.json";
 
   constructor() {
+    this.setupNavigation(); // Yeni eklenen sekme değiştirme motoru
     this.initProfile();
+  }
+
+  // Sekmeler arası YUMUŞAK GEÇİŞİ (Fade In/Out) sağlayan sistem
+  private setupNavigation() {
+    const navHome = document.getElementById("nav-home");
+    const navCiv = document.getElementById("nav-civ");
+    const navLeaderboard = document.getElementById("nav-leaderboard");
+
+    const viewHome = document.getElementById("view-home");
+    const viewCiv = document.getElementById("view-civ");
+    const viewLeaderboard = document.getElementById("view-leaderboard");
+
+    const navItems = [navHome, navCiv, navLeaderboard];
+    const views = [viewHome, viewCiv, viewLeaderboard];
+
+    // İlk açılışta ana sayfanın görünürlüğünü garantiye al
+    if (viewHome) {
+        viewHome.style.display = "block";
+        viewHome.style.opacity = "1";
+    }
+
+    const switchView = (targetNav: HTMLElement | null, targetView: HTMLElement | null) => {
+      // Eğer tıklanan sekme zaten açıksa veya elementler yoksa hiçbir şey yapma
+      if (!targetNav || !targetView || targetNav.classList.contains("active")) return;
+
+      // Üst menüdeki mavi çizgiyi anında yeni sekmeye geçir
+      navItems.forEach(nav => nav?.classList.remove("active"));
+      targetNav.classList.add("active");
+
+      // Şu an ekranda açık olan (display: block olan) sekmeyi bul
+      const currentView = views.find(view => view && view.style.display === "block");
+
+      if (currentView) {
+        // 1. Adım: Önce açık olan sekmeyi yavaşça karart (Fade Out)
+        currentView.style.opacity = "0";
+
+        // 2. Adım: Kararma animasyonu bitene kadar bekle (200ms)
+        setTimeout(() => {
+          currentView.style.display = "none"; // Ekranda yer kaplamasını engelle
+          targetView.style.display = "block"; // Yeni sekmeyi yerleştir (ama hala şeffaf)
+
+          // 3. Adım: Tarayıcının yeni düzeni çizmesi için çok kısa bir süre bekle ve sonra yavaşça aydınlat (Fade In)
+          setTimeout(() => {
+            targetView.style.opacity = "1";
+          }, 20); // 20ms'lik bu gecikme, tarayıcının animasyonu atlamasını engeller
+        }, 200); // Bu süre CSS'deki transition süresiyle (0.2s) eşleşmelidir
+      }
+    };
+
+    // Butonlara tıklama (click) olaylarını bağla
+    navHome?.addEventListener("click", () => switchView(navHome, viewHome));
+    navCiv?.addEventListener("click", () => switchView(navCiv, viewCiv));
+    navLeaderboard?.addEventListener("click", () => switchView(navLeaderboard, viewLeaderboard));
   }
 
   // SADELEŞTİRİLMİŞ BAŞLATMA MANTIĞI
@@ -136,28 +190,65 @@ export class DesktopMenu {
     }
   }
 
-  // --- 3. MEDENİYET İSTATİSTİKLERİNİ ÇEKEN FONKSİYON ---
+// --- 3. MEDENİYET İSTATİSTİKLERİNİ ÇEKEN FONKSİYON (Resmi API ile) ---
   private async fetchCivStats(aoe2Id: string) {
     try {
-      const targetUrl = `https://www.aoe2insights.com/user/${aoe2Id}/civ-stats/`;
-      const response = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`);
+      // Proxy kullanmadan doğrudan resmi API'ye bağlanıyoruz
+      const targetUrl = `https://data.aoe2companion.com/api/profiles/${aoe2Id}?extend=stats`;
+      const response = await fetch(targetUrl);
 
       if (!response.ok) throw new Error("Medeniyet verilerine ulaşılamadı.");
 
-      // Codetabs veriyi doğrudan JSON dizisi olarak verdiği için JSON.parse ile uğraşmıyoruz!
-      const civArray = await response.json();
+      const data = await response.json();
 
       const container = document.getElementById("civStatsContainer");
       if (!container) return;
 
       container.innerHTML = "";
 
-      const topCivs = civArray.slice(0, 5);
+      // Tüm oyun modlarındaki civ oynanma sayılarını toplayacağımız bir harita (Map) oluşturuyoruz
+      const civStatsMap = new Map<string, { name: string, icon: string, count: number }>();
 
+      if (data && data.stats) {
+        // Her bir oyun modunu (leaderboard) dön
+        data.stats.forEach((leaderboard: any) => {
+          if (leaderboard.civ && Array.isArray(leaderboard.civ)) {
+            // O moddaki her bir medeniyeti dön
+            leaderboard.civ.forEach((civData: any) => {
+              const civKey = civData.civ; // örn: "huns"
+              
+              // Eğer bu medeniyeti haritaya henüz eklemediysek, sıfırdan ekle
+              if (!civStatsMap.has(civKey)) {
+                civStatsMap.set(civKey, {
+                  name: civData.civName,
+                  icon: civKey, // API zaten küçük harfli resim formatını veriyor (huns, turks)
+                  count: 0
+                });
+              }
+              
+              // Oynanma sayısını (games) mevcut sayının üzerine ekle
+              civStatsMap.get(civKey)!.count += civData.games;
+            });
+          }
+        });
+      }
+
+      // Haritayı diziye çevir, oynanma sayısına (count) göre büyükten küçüğe sırala
+      const sortedCivs = Array.from(civStatsMap.values()).sort((a, b) => b.count - a.count);
+      
+      // En çok oynanan ilk 5 medeniyeti al
+      const topCivs = sortedCivs.slice(0, 5);
+
+      if (topCivs.length === 0) {
+         container.innerHTML = "<p style='color:gray; text-align:center; margin-top:10px;'>Medeniyet verisi bulunamadı.</p>";
+         return;
+      }
+
+      // Verileri senin orjinal tasarımına uygun şekilde HTML'e bas
       topCivs.forEach((civ: any) => {
         const civCardHtml = `
           <div class="civCard" style="display: flex; align-items: center; margin-bottom: 8px;">
-            <img src="../../img/civs/${civ.icon}.webp" alt="${civ.name}" height="64" width="64">
+            <img src="../../img/civs/${civ.icon}.webp" alt="${civ.name}" height="64" width="64" onerror="this.src='../../img/civs/unknown.webp'">
             <div class="civAlt" style="margin-left: 12px;">
               <p class="civName" style="margin: 0; font-weight: bold;">${civ.name}</p>
               <p class="civMatchCount" style="margin: 0; font-size: 14px; color: #a0a0a0;">Maç: ${civ.count}</p>
@@ -174,28 +265,31 @@ export class DesktopMenu {
     }
   }
 
-  // --- 4. ELO VE DERECE İSTATİSTİKLERİNİ ÇEKEN FONKSİYON ---
+// --- 4. ELO VE DERECE İSTATİSTİKLERİNİ ÇEKEN FONKSİYON (Resmi API ile) ---
   private async fetchEloStats(aoe2Id: string) {
     try {
-      // "4" ID'si genellikle 1v1 RM (Rastgele Harita) modunu temsil eder
-      const targetUrl = `https://www.aoe2insights.com/user/${aoe2Id}/elo-history/4/`;
-      const response = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`);
+      // Doğrudan profil API'sine istek atıyoruz (Proxy YOK!)
+      const targetUrl = `https://data.aoe2companion.com/api/profiles/${aoe2Id}`;
+      const response = await fetch(targetUrl);
 
       if (!response.ok) throw new Error("Elo verilerine ulaşılamadı.");
 
-      const eloData = await response.json();
+      const data = await response.json();
 
-      // Eğer veri boşsa (oyuncu hiç 1v1 dereceli atmamışsa)
-      if (!eloData || eloData.length === 0) {
+      // Eğer "leaderboards" dizisi boşsa (oyuncu hiç dereceli atmamışsa)
+      if (!data || !data.leaderboards || data.leaderboards.length === 0) {
         this.updateRankUI("unranked", "Derecesiz (Unranked)", "Elo: Yok");
         return;
       }
 
-      // Dizinin EN SONUNDAKİ elemanı alıyoruz (Güncel Elo)
-      const lastRecord = eloData[eloData.length - 1];
-      const currentElo = lastRecord.y;
+      // Şimdilik listedeki İLK elemanı (en üsttekini) alıyoruz
+      const firstLeaderboard = data.leaderboards[0];
+      const currentElo = firstLeaderboard.rating;
+      
+      // Oyuncunun hangi modda bu eloya sahip olduğunu da gösterelim (örn: "RM Team")
+      const modeName = firstLeaderboard.abbreviation || "Dereceli";
 
-      // Elo'ya göre rank belirleme mantığı (Sayıları kendine göre ayarlayabilirsin)
+      // Elo'ya göre rank belirleme mantığı
       let rankIcon = "unranked";
       let rankName = "Deneyimsiz - Yeni Başlayan";
 
@@ -219,8 +313,8 @@ export class DesktopMenu {
         rankName = "Challenger";
       }
 
-      // Bulduğumuz verileri arayüze basıyoruz
-      this.updateRankUI(rankIcon, rankName, `Elo: ${currentElo}`);
+      // Bulduğumuz verileri arayüze basıyoruz (Parantez içinde oyun modunu da yazdırdım)
+      this.updateRankUI(rankIcon, `${rankName} (${modeName})`, `Elo: ${currentElo}`);
 
     } catch (error) {
       console.error("Elo verisi çekilirken hata:", error);
@@ -240,83 +334,87 @@ export class DesktopMenu {
     if (eloValueEl) eloValueEl.innerText = eloText;
   }
 
-  // --- 5. MAÇ GEÇMİŞİNİ ÇEKEN VE TAKIMLARI PARÇALAYAN FONKSİYON ---
+// --- 5. MAÇ GEÇMİŞİNİ ÇEKEN VE TAKIMLARI PARÇALAYAN FONKSİYON (Resmi API ile) ---
   private async fetchMatchHistory(aoe2Id: string) {
     try {
-      const targetUrl = `https://www.aoe2insights.com/user/${aoe2Id}/`;
-      const response = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`);
+      // 5 maçı getiren, proxy gerektirmeyen yeni ve süper hızlı JSON bağlantımız
+      const url = `https://data.aoe2companion.com/api/matches?profile_ids=${aoe2Id}&use_enums=true&page=1&per_page=5`;
+      
+      const response = await fetch(url);
+      if (!response.ok) throw new Error("Maç geçmişi API'sine ulaşılamadı.");
 
-      if (!response.ok) throw new Error("Maç geçmişi sayfasına ulaşılamadı.");
-
-      const htmlText = await response.text();
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(htmlText, "text/html");
+      // Veriyi doğrudan JSON olarak açıyoruz
+      const json = await response.json();
+      const matches = json.matches; // Maç dizimiz
 
       const container = document.getElementById("matchHistoryContainer");
       if (!container) return;
 
-      const matchTiles = doc.querySelectorAll(".match-tile");
-      if (matchTiles.length === 0) {
+      if (!matches || matches.length === 0) {
         container.innerHTML = "<p style='text-align:center; color:#ccc;'>Maç geçmişi bulunamadı.</p>";
         return;
       }
 
-      container.innerHTML = "";
+      container.innerHTML = ""; // Yükleniyor yazısını temizle
 
-      // Son 5 maçı gösteriyoruz
-      const recentMatches = Array.from(matchTiles).slice(0, 5);
+      matches.forEach((match: any) => {
+        // Harita Adı
+        const mapName = match.mapName || "Bilinmeyen Harita";
 
-      recentMatches.forEach(tile => {
-        // Harita Adı ve Süre
-        const mapEl = tile.querySelector(".match-map");
-        const mapName = mapEl ? mapEl.textContent?.trim() : "Bilinmeyen Harita";
+        // Maç süresini hesaplama (Bitiş zamanından başlangıç zamanını çıkarıyoruz)
+        let durationStr = "Süre Yok";
+        if (match.started && match.finished) {
+          const startMs = new Date(match.started).getTime();
+          const endMs = new Date(match.finished).getTime();
+          const diffMs = endMs - startMs;
+          
+          const diffMins = Math.floor(diffMs / 60000);
+          const diffSecs = Math.floor((diffMs % 60000) / 1000);
+          durationStr = `${diffMins}m ${diffSecs}s`;
+        } else if (match.started && !match.finished) {
+          durationStr = "Devam Ediyor"; // Eğer maç hala bitmediyse
+        }
 
-        const clockIcon = tile.querySelector(".fa-clock");
-        const duration = clockIcon?.parentElement ? clockIcon.parentElement.textContent?.trim() : "";
-
-        // Takımları Ayrıştırma Mantığı
-        const teamNodes = tile.querySelectorAll(".team");
-        let myTeam: any = null;
+        let myTeam: any[] = [];
         let enemyTeams: any[] = [];
         let isWin = false;
+        let myTeamId = -1;
 
-        // Her bir takımı döngüye sok
-        teamNodes.forEach(teamNode => {
-          let isMyTeam = false;
-          let hasWon = teamNode.classList.contains("won");
-          let playersData: any[] = [];
+        // 1. ADIM: Hangi takımda olduğumuzu bulalım
+        if (match.teams) {
+           match.teams.forEach((team: any) => {
+              team.players.forEach((p: any) => {
+                 if (p.profileId && p.profileId.toString() === aoe2Id) {
+                    myTeamId = team.teamId;
+                    isWin = (p.won === true); // Kazanma durumu
+                 }
+              });
+           });
 
-          // Takımdaki her bir oyuncuyu döngüye sok
-          const playerNodes = teamNode.querySelectorAll("li");
-          playerNodes.forEach(pNode => {
-            const userLinkEl = pNode.querySelector(".user-link a");
-            const playerName = userLinkEl ? userLinkEl.textContent?.trim() : "Bilinmiyor";
-            const playerHref = userLinkEl ? userLinkEl.getAttribute("href") : "";
+           // 2. ADIM: Tüm oyuncuları kendi takımımıza ve rakip takıma yerleştirelim
+           match.teams.forEach((team: any) => {
+              const teamPlayers: any[] = [];
+              team.players.forEach((p: any) => {
+                  const civName = p.civName || "Bilinmiyor";
+                  // API bize civ değerini "bohemians", "huns" gibi resim isimlerine tam uygun verir!
+                  const civIconStr = p.civ || "unknown"; 
+                  const isMe = (p.profileId && p.profileId.toString() === aoe2Id);
+                  const playerName = p.name || "Bilinmiyor";
 
-            const civIconEl = pNode.querySelector(".image-icon");
-            const civName = civIconEl ? (civIconEl.getAttribute("title") || "Bilinmiyor") : "Bilinmiyor";
-            const civIconStr = civName.toLowerCase().replace(/ /g, "_"); // Boşlukları alt çizgi yap (örn: Teutons)
+                  teamPlayers.push({ name: playerName, civName, civIconStr, isMe });
+              });
 
-            // Bu oyuncu biz miyiz?
-            const isMe = playerHref && playerHref.includes(`/user/${aoe2Id}/`);
-            if (isMe) {
-              isMyTeam = true;
-              isWin = hasWon; // Bizim takım kazandıysa maçı kazanmışızdır
-            }
+              if (team.teamId === myTeamId) {
+                  // Kendi takımımızı tek bir listeye koyuyoruz
+                  myTeam.push(...teamPlayers);
+              } else {
+                  // Rakip takımları ayrı bir dizi olarak ekliyoruz (FFA maçlar için önemli)
+                  enemyTeams.push(teamPlayers);
+              }
+           });
+        }
 
-            playersData.push({ name: playerName, civName, civIconStr, isMe });
-          });
-
-          const teamObj = { hasWon, playersData };
-
-          // Bizim takım mı yoksa rakip mi ayır
-          if (isMyTeam) {
-            myTeam = teamObj;
-          } else {
-            enemyTeams.push(teamObj);
-          }
-        });
-
+        // Tasarımı duruma göre ayarla
         const resultColor = isWin ? "#2ecc71" : "#e74c3c";
         const resultText = isWin ? "Galibiyet" : "Mağlubiyet";
 
@@ -324,7 +422,7 @@ export class DesktopMenu {
         const renderPlayers = (players: any[]) => {
           return players.map(p => `
                 <div style="display: flex; align-items: center; margin-bottom: 3px;">
-                    <img src="../../img/civs/${p.civIconStr}.webp" title="${p.civName}" style="width: 18px; height: 18px; border-radius: 2px; margin-right: 5px;">
+                    <img src="../../img/civs/${p.civIconStr}.webp" title="${p.civName}" style="width: 18px; height: 18px; border-radius: 2px; margin-right: 5px;" onerror="this.src='../../img/civs/unknown.webp'">
                     <span style="font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80px; color: ${p.isMe ? '#f1c40f' : '#dcdde1'}; font-weight: ${p.isMe ? 'bold' : 'normal'};">
                         ${p.name}
                     </span>
@@ -332,10 +430,9 @@ export class DesktopMenu {
             `).join("");
         };
 
-        const myTeamHtml = myTeam ? renderPlayers(myTeam.playersData) : "";
-
-        // Eğer 3lü veya 4lü FFA maçları varsa rakipleri alt alta birleştirir
-        const enemyHtml = enemyTeams.map(t => renderPlayers(t.playersData)).join('<div style="height:1px; background:rgba(255,255,255,0.1); margin:3px 0;"></div>');
+        const myTeamHtml = renderPlayers(myTeam);
+        // Eğer 3lü veya 4lü FFA maçları varsa rakipleri alt alta birleştirir (Araya çizgi atar)
+        const enemyHtml = enemyTeams.map(teamPlayers => renderPlayers(teamPlayers)).join('<div style="height:1px; background:rgba(255,255,255,0.1); margin:3px 0;"></div>');
 
         // Yeni Gelişmiş Kompakt Kart Tasarımı
         const matchHtml = `
@@ -344,7 +441,7 @@ export class DesktopMenu {
              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px; margin-bottom: 6px;">
                  <span style="font-weight: bold; font-size: 12px; color: #fff;">${mapName}</span>
                  <span style="font-weight: bold; font-size: 12px; color: ${resultColor};">${resultText}</span>
-                 <span style="font-size: 10px; color: #888;">${duration}</span>
+                 <span style="font-size: 10px; color: #888;">${durationStr}</span>
              </div>
              
              <div style="display: flex; justify-content: space-between; align-items: flex-start;">

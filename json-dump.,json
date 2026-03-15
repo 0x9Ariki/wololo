@@ -1,0 +1,1307 @@
+{
+  "params": {
+    "extend": "stats"
+  },
+  "clan": "",
+  "drops": "2",
+  "games": "62",
+  "hidden": null,
+  "name": "Cap",
+  "profileId": 5963734,
+  "steamId": "76561198357903522",
+  "country": "tr",
+  "sharedHistory": null,
+  "platform": "steam",
+  "verified": false,
+  "shared": false,
+  "linkedProfiles": [],
+  "countryIcon": "🇹🇷",
+  "countryName": "Türkiye",
+  "platformName": "Steam",
+  "leaderboards": [
+    {
+      "name": "Cap",
+      "rank": 41941,
+      "rating": 959,
+      "drops": 1,
+      "losses": 10,
+      "streak": -3,
+      "wins": 9,
+      "games": 19,
+      "active": false,
+      "season": -1,
+      "updatedAt": "2026-03-15T10:59:23.672Z",
+      "lastMatchTime": "2026-02-11T19:11:19.000Z",
+      "rankCountry": 1708,
+      "rankLevel": "unknown",
+      "rankLevelName": "[rank_level.unknown]",
+      "rankLevelImageUrl": null,
+      "leaderboardId": "rm_team",
+      "leaderboardName": "Team Random Map",
+      "abbreviation": "RM Team",
+      "maxRating": 959,
+      "total": 67308
+    },
+    {
+      "name": "Cap",
+      "rank": 23722,
+      "rating": 1285,
+      "drops": 1,
+      "losses": 25,
+      "streak": -7,
+      "wins": 18,
+      "games": 43,
+      "active": true,
+      "season": -1,
+      "updatedAt": "2026-03-01T12:25:56.574Z",
+      "lastMatchTime": "2026-03-01T12:21:34.000Z",
+      "rankCountry": 968,
+      "rankLevel": "unknown",
+      "rankLevelName": "[rank_level.unknown]",
+      "rankLevelImageUrl": null,
+      "leaderboardId": "unranked",
+      "leaderboardName": "Unranked",
+      "abbreviation": "UNR",
+      "maxRating": 1295,
+      "total": 204067
+    }
+  ],
+  "ratings": [
+    {
+      "leaderboardId": "rm_1v1",
+      "leaderboardName": "1v1 Random Map",
+      "abbreviation": "RM 1v1",
+      "ratings": []
+    },
+    {
+      "leaderboardId": "rm_team",
+      "leaderboardName": "Team Random Map",
+      "abbreviation": "RM Team",
+      "ratings": [
+        {
+          "date": "2026-02-11T19:11:19.000Z",
+          "games": 19,
+          "rating": 959,
+          "ratingDiff": -23
+        },
+        {
+          "date": "2022-12-23T20:07:31.000Z",
+          "games": 18,
+          "rating": 982,
+          "ratingDiff": -20
+        },
+        {
+          "date": "2022-12-23T19:10:27.000Z",
+          "games": 17,
+          "rating": 1002,
+          "ratingDiff": -19
+        },
+        {
+          "date": "2022-12-23T18:44:45.000Z",
+          "games": 16,
+          "rating": 1021,
+          "ratingDiff": 23
+        },
+        {
+          "date": "2022-12-21T19:47:23.000Z",
+          "games": 15,
+          "rating": 998,
+          "ratingDiff": -26
+        },
+        {
+          "date": "2022-12-18T10:06:31.000Z",
+          "games": 14,
+          "rating": 1024,
+          "ratingDiff": 26
+        },
+        {
+          "date": "2022-12-18T09:01:32.000Z",
+          "games": 13,
+          "rating": 998,
+          "ratingDiff": 31
+        },
+        {
+          "date": "2022-12-12T21:35:41.000Z",
+          "games": 12,
+          "rating": 967,
+          "ratingDiff": 28
+        },
+        {
+          "date": "2022-12-11T14:58:31.000Z",
+          "games": 11,
+          "rating": 939,
+          "ratingDiff": -32
+        },
+        {
+          "date": "2022-12-11T14:36:16.000Z",
+          "games": 10,
+          "rating": 971,
+          "ratingDiff": null
+        }
+      ]
+    },
+    {
+      "leaderboardId": "ew_1v1_redbullwololo",
+      "leaderboardName": "Red Bull Wololo 1v1",
+      "abbreviation": "RB 1v1",
+      "ratings": []
+    },
+    {
+      "leaderboardId": "ew_team",
+      "leaderboardName": "Team Empire Wars",
+      "abbreviation": "EW Team",
+      "ratings": []
+    },
+    {
+      "leaderboardId": "unranked",
+      "leaderboardName": "Unranked",
+      "abbreviation": "UNR",
+      "ratings": [
+        {
+          "date": "2026-03-01T12:21:34.000Z",
+          "games": 43,
+          "rating": 1285,
+          "ratingDiff": null
+        },
+        {
+          "date": "2026-03-01T12:12:36.000Z",
+          "games": 41,
+          "rating": 1285,
+          "ratingDiff": 0
+        },
+        {
+          "date": "2026-03-01T12:03:19.000Z",
+          "games": 40,
+          "rating": 1285,
+          "ratingDiff": 0
+        },
+        {
+          "date": "2026-03-01T11:16:41.000Z",
+          "games": 39,
+          "rating": 1285,
+          "ratingDiff": 0
+        },
+        {
+          "date": "2026-03-01T11:09:50.000Z",
+          "games": 38,
+          "rating": 1285,
+          "ratingDiff": 0
+        },
+        {
+          "date": "2026-03-01T10:40:43.000Z",
+          "games": 37,
+          "rating": 1285,
+          "ratingDiff": 0
+        },
+        {
+          "date": "2026-02-12T15:52:20.000Z",
+          "games": 36,
+          "rating": 1285,
+          "ratingDiff": 3
+        },
+        {
+          "date": "2022-12-19T22:24:17.000Z",
+          "games": 35,
+          "rating": 1282,
+          "ratingDiff": 3
+        },
+        {
+          "date": "2022-12-19T21:58:14.000Z",
+          "games": 34,
+          "rating": 1279,
+          "ratingDiff": 4
+        },
+        {
+          "date": "2022-12-19T21:09:03.000Z",
+          "games": 33,
+          "rating": 1275,
+          "ratingDiff": -4
+        },
+        {
+          "date": "2022-12-19T20:17:40.000Z",
+          "games": 32,
+          "rating": 1279,
+          "ratingDiff": -5
+        },
+        {
+          "date": "2022-12-19T17:46:20.000Z",
+          "games": 31,
+          "rating": 1284,
+          "ratingDiff": 5
+        },
+        {
+          "date": "2022-12-16T20:52:04.000Z",
+          "games": 30,
+          "rating": 1279,
+          "ratingDiff": 5
+        },
+        {
+          "date": "2022-12-12T20:47:30.000Z",
+          "games": 29,
+          "rating": 1274,
+          "ratingDiff": -13
+        },
+        {
+          "date": "2022-12-12T19:29:39.000Z",
+          "games": 28,
+          "rating": 1287,
+          "ratingDiff": 5
+        },
+        {
+          "date": "2022-12-11T16:06:54.000Z",
+          "games": 27,
+          "rating": 1282,
+          "ratingDiff": -9
+        },
+        {
+          "date": "2022-12-10T23:35:38.000Z",
+          "games": 26,
+          "rating": 1291,
+          "ratingDiff": 5
+        },
+        {
+          "date": "2022-12-10T22:13:31.000Z",
+          "games": 25,
+          "rating": 1286,
+          "ratingDiff": -9
+        },
+        {
+          "date": "2022-12-10T22:01:37.000Z",
+          "games": 24,
+          "rating": 1295,
+          "ratingDiff": 5
+        },
+        {
+          "date": "2022-12-07T20:39:58.000Z",
+          "games": 23,
+          "rating": 1290,
+          "ratingDiff": 5
+        },
+        {
+          "date": "2022-12-07T18:04:18.000Z",
+          "games": 22,
+          "rating": 1285,
+          "ratingDiff": -8
+        },
+        {
+          "date": "2022-12-06T19:25:11.000Z",
+          "games": 21,
+          "rating": 1293,
+          "ratingDiff": 16
+        },
+        {
+          "date": "2022-12-06T19:03:41.000Z",
+          "games": 20,
+          "rating": 1277,
+          "ratingDiff": 24
+        },
+        {
+          "date": "2022-12-05T19:34:50.000Z",
+          "games": 19,
+          "rating": 1253,
+          "ratingDiff": 16
+        },
+        {
+          "date": "2022-12-05T19:02:15.000Z",
+          "games": 18,
+          "rating": 1237,
+          "ratingDiff": -12
+        },
+        {
+          "date": "2022-12-05T18:53:36.000Z",
+          "games": 17,
+          "rating": 1249,
+          "ratingDiff": -12
+        },
+        {
+          "date": "2022-12-05T18:34:57.000Z",
+          "games": 16,
+          "rating": 1261,
+          "ratingDiff": -8
+        },
+        {
+          "date": "2022-12-04T19:00:23.000Z",
+          "games": 15,
+          "rating": 1269,
+          "ratingDiff": 32
+        },
+        {
+          "date": "2022-12-04T14:49:23.000Z",
+          "games": 14,
+          "rating": 1237,
+          "ratingDiff": -16
+        },
+        {
+          "date": "2022-12-04T14:01:43.000Z",
+          "games": 13,
+          "rating": 1253,
+          "ratingDiff": 51
+        },
+        {
+          "date": "2022-12-04T13:24:34.000Z",
+          "games": 12,
+          "rating": 1202,
+          "ratingDiff": -16
+        },
+        {
+          "date": "2022-12-04T12:16:22.000Z",
+          "games": 11,
+          "rating": 1218,
+          "ratingDiff": -16
+        },
+        {
+          "date": "2022-12-04T11:38:01.000Z",
+          "games": 10,
+          "rating": 1234,
+          "ratingDiff": null
+        }
+      ]
+    },
+    {
+      "leaderboardId": "rm_1v1_console",
+      "leaderboardName": "1v1 Random Map (Console)",
+      "abbreviation": "RM 1v1 🎮",
+      "ratings": []
+    },
+    {
+      "leaderboardId": "rm_team_console",
+      "leaderboardName": "Team Random Map (Console)",
+      "abbreviation": "RM Team 🎮",
+      "ratings": []
+    },
+    {
+      "leaderboardId": "ew_1v1_redbullwololo_console",
+      "leaderboardName": "Red Bull Wololo 1v1 (Console)",
+      "abbreviation": "RB 1v1 🎮",
+      "ratings": []
+    },
+    {
+      "leaderboardId": "ew_team_console",
+      "leaderboardName": "Team Empire Wars (Console)",
+      "abbreviation": "EW Team 🎮",
+      "ratings": []
+    }
+  ],
+  "stats": [
+    {
+      "leaderboardId": "rm_1v1",
+      "leaderboardName": "1v1 Random Map",
+      "abbreviation": "RM 1v1",
+      "civ": [
+        {
+          "civ": "turks",
+          "civName": "Türkler",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/turks.png",
+          "games": 1,
+          "wins": 1,
+          "losses": 0
+        },
+        {
+          "civ": "aztecs",
+          "civName": "Aztekler",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/aztecs.png",
+          "games": 1,
+          "wins": 0,
+          "losses": 1
+        }
+      ],
+      "map": [
+        {
+          "map": "rm_arena",
+          "mapName": "Arena",
+          "mapImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/maps/rm_arena.png",
+          "games": 1,
+          "wins": 1,
+          "losses": 0
+        },
+        {
+          "map": "cm_prairie",
+          "mapName": "Çayır",
+          "mapImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/maps/cm_prairie.png",
+          "games": 1,
+          "wins": 0,
+          "losses": 1
+        }
+      ],
+      "allies": [],
+      "opponents": [
+        {
+          "profileId": 4738312,
+          "name": "davidrajder",
+          "country": "se",
+          "countryIcon": "🇸🇪",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 4681319,
+          "name": "TFatOCat",
+          "country": "ca",
+          "countryIcon": "🇨🇦",
+          "games": 1,
+          "wins": 0,
+          "losses": 1,
+          "verified": false
+        }
+      ]
+    },
+    {
+      "leaderboardId": "rm_team",
+      "leaderboardName": "Team Random Map",
+      "abbreviation": "RM Team",
+      "civ": [
+        {
+          "civ": "turks",
+          "civName": "Türkler",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/turks.png",
+          "games": 4,
+          "wins": 1,
+          "losses": 3
+        },
+        {
+          "civ": "huns",
+          "civName": "Hunlar",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/huns.png",
+          "games": 3,
+          "wins": 3,
+          "losses": 0
+        },
+        {
+          "civ": "vietnamese",
+          "civName": "Vietnamlılar",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/vietnamese.png",
+          "games": 3,
+          "wins": 0,
+          "losses": 3
+        },
+        {
+          "civ": "burgundians",
+          "civName": "Burgonyalılar",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/burgundians.png",
+          "games": 2,
+          "wins": 2,
+          "losses": 0
+        },
+        {
+          "civ": "lithuanians",
+          "civName": "Litvanyalılar",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/lithuanians.png",
+          "games": 2,
+          "wins": 2,
+          "losses": 0
+        },
+        {
+          "civ": "aztecs",
+          "civName": "Aztekler",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/aztecs.png",
+          "games": 2,
+          "wins": 0,
+          "losses": 2
+        },
+        {
+          "civ": "mayans",
+          "civName": "Maya",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/mayans.png",
+          "games": 1,
+          "wins": 1,
+          "losses": 0
+        },
+        {
+          "civ": "berbers",
+          "civName": "Berberiler",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/berbers.png",
+          "games": 1,
+          "wins": 0,
+          "losses": 1
+        },
+        {
+          "civ": "saracens",
+          "civName": "Sarazenler",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/saracens.png",
+          "games": 1,
+          "wins": 0,
+          "losses": 1
+        }
+      ],
+      "map": [
+        {
+          "map": "rm_black-forest",
+          "mapName": "Kara Orman",
+          "mapImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/maps/rm_black-forest.png",
+          "games": 7,
+          "wins": 2,
+          "losses": 5
+        },
+        {
+          "map": "rm_arena",
+          "mapName": "Arena",
+          "mapImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/maps/rm_arena.png",
+          "games": 5,
+          "wins": 3,
+          "losses": 2
+        },
+        {
+          "map": "rm_michi",
+          "mapName": "Michi",
+          "mapImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/maps/rm_michi.png",
+          "games": 3,
+          "wins": 1,
+          "losses": 2
+        },
+        {
+          "map": "rm_golden-pit",
+          "mapName": "Altın Çukuru",
+          "mapImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/maps/rm_golden-pit.png",
+          "games": 1,
+          "wins": 1,
+          "losses": 0
+        },
+        {
+          "map": "rm_land_nomad",
+          "mapName": "Kara Göçebesi",
+          "mapImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/maps/rm_land_nomad.png",
+          "games": 1,
+          "wins": 1,
+          "losses": 0
+        },
+        {
+          "map": "rm_pacific-islands",
+          "mapName": "Pasifik Adaları",
+          "mapImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/maps/rm_pacific-islands.png",
+          "games": 1,
+          "wins": 1,
+          "losses": 0
+        },
+        {
+          "map": "rm_nomad",
+          "mapName": "Göçebe",
+          "mapImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/maps/rm_nomad.png",
+          "games": 1,
+          "wins": 0,
+          "losses": 1
+        }
+      ],
+      "allies": [
+        {
+          "profileId": 11606469,
+          "name": "Andarkan",
+          "country": "tr",
+          "countryIcon": "🇹🇷",
+          "games": 2,
+          "wins": 0,
+          "losses": 2,
+          "verified": false
+        },
+        {
+          "profileId": 5779370,
+          "name": "434529096",
+          "country": "cn",
+          "countryIcon": "🇨🇳",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 4148465,
+          "name": "Cordsquash91",
+          "country": "fr",
+          "countryIcon": "🇫🇷",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 1807740,
+          "name": "Javi",
+          "country": "es",
+          "countryIcon": "🇪🇸",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 6727844,
+          "name": "Joca",
+          "country": "br",
+          "countryIcon": "🇧🇷",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 8974710,
+          "name": "Kratos",
+          "country": "in",
+          "countryIcon": "🇮🇳",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 11186822,
+          "name": "Michaldin",
+          "country": "cz",
+          "countryIcon": "🇨🇿",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 6799292,
+          "name": "SYNC",
+          "country": "in",
+          "countryIcon": "🇮🇳",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 10008344,
+          "name": "Zytan",
+          "country": "de",
+          "countryIcon": "🇩🇪",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 9289076,
+          "name": "krommet123",
+          "country": "de",
+          "countryIcon": "🇩🇪",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        }
+      ],
+      "opponents": [
+        {
+          "profileId": 4967813,
+          "name": "ATLANT",
+          "country": "ua",
+          "countryIcon": "🇺🇦",
+          "games": 3,
+          "wins": 1,
+          "losses": 2,
+          "verified": false
+        },
+        {
+          "profileId": 6391727,
+          "name": "☆Issei and Rias☆",
+          "country": "cz",
+          "countryIcon": "🇨🇿",
+          "games": 2,
+          "wins": 1,
+          "losses": 1,
+          "verified": false
+        },
+        {
+          "profileId": 3204489,
+          "name": "AtrophicAmygdala",
+          "country": "gb",
+          "countryIcon": "🇬🇧",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 159923,
+          "name": "Bright",
+          "country": "de",
+          "countryIcon": "🇩🇪",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 10250267,
+          "name": "Forty",
+          "country": "de",
+          "countryIcon": "🇩🇪",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 7141222,
+          "name": "Mr.Marysak_*CZE",
+          "country": "cz",
+          "countryIcon": "🇨🇿",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 11246478,
+          "name": "Pastel de papas",
+          "country": "ar",
+          "countryIcon": "🇦🇷",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 2389845,
+          "name": "Valahul",
+          "country": "ro",
+          "countryIcon": "🇷🇴",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 1686346,
+          "name": "[Asassins] Emy",
+          "country": "ro",
+          "countryIcon": "🇷🇴",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 9151341,
+          "name": "angelhaze",
+          "country": "us",
+          "countryIcon": "🇺🇸",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        }
+      ]
+    },
+    {
+      "leaderboardId": "ew_1v1_redbullwololo",
+      "leaderboardName": "Red Bull Wololo 1v1",
+      "abbreviation": "RB 1v1",
+      "civ": [],
+      "map": [],
+      "allies": [],
+      "opponents": []
+    },
+    {
+      "leaderboardId": "ew_team",
+      "leaderboardName": "Team Empire Wars",
+      "abbreviation": "EW Team",
+      "civ": [],
+      "map": [],
+      "allies": [],
+      "opponents": []
+    },
+    {
+      "leaderboardId": "unranked",
+      "leaderboardName": "Unranked",
+      "abbreviation": "UNR",
+      "civ": [
+        {
+          "civ": "huns",
+          "civName": "Hunlar",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/huns.png",
+          "games": 7,
+          "wins": 4,
+          "losses": 3
+        },
+        {
+          "civ": "turks",
+          "civName": "Türkler",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/turks.png",
+          "games": 7,
+          "wins": 3,
+          "losses": 4
+        },
+        {
+          "civ": "aztecs",
+          "civName": "Aztekler",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/aztecs.png",
+          "games": 3,
+          "wins": 2,
+          "losses": 1
+        },
+        {
+          "civ": "vietnamese",
+          "civName": "Vietnamlılar",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/vietnamese.png",
+          "games": 3,
+          "wins": 1,
+          "losses": 2
+        },
+        {
+          "civ": "franks",
+          "civName": "Franklar",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/franks.png",
+          "games": 2,
+          "wins": 0,
+          "losses": 2
+        },
+        {
+          "civ": "magyars",
+          "civName": "Macarlar",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/magyars.png",
+          "games": 2,
+          "wins": 0,
+          "losses": 2
+        },
+        {
+          "civ": "burgundians",
+          "civName": "Burgonyalılar",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/burgundians.png",
+          "games": 1,
+          "wins": 1,
+          "losses": 0
+        },
+        {
+          "civ": "byzantines",
+          "civName": "Bizanslılar",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/byzantines.png",
+          "games": 1,
+          "wins": 1,
+          "losses": 0
+        },
+        {
+          "civ": "ethiopians",
+          "civName": "Etiyopyalılar",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/ethiopians.png",
+          "games": 1,
+          "wins": 1,
+          "losses": 0
+        },
+        {
+          "civ": "malay",
+          "civName": "Malaylar",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/malay.png",
+          "games": 1,
+          "wins": 1,
+          "losses": 0
+        },
+        {
+          "civ": "mayans",
+          "civName": "Maya",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/mayans.png",
+          "games": 1,
+          "wins": 1,
+          "losses": 0
+        },
+        {
+          "civ": "saracens",
+          "civName": "Sarazenler",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/saracens.png",
+          "games": 1,
+          "wins": 1,
+          "losses": 0
+        },
+        {
+          "civ": "slavs",
+          "civName": "Slavlar",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/slavs.png",
+          "games": 1,
+          "wins": 1,
+          "losses": 0
+        },
+        {
+          "civ": "berbers",
+          "civName": "Berberiler",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/berbers.png",
+          "games": 1,
+          "wins": 0,
+          "losses": 1
+        },
+        {
+          "civ": "britons",
+          "civName": "Britonlar",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/britons.png",
+          "games": 1,
+          "wins": 0,
+          "losses": 1
+        },
+        {
+          "civ": "indians",
+          "civName": "Hintler",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/indians.png",
+          "games": 1,
+          "wins": 0,
+          "losses": 1
+        },
+        {
+          "civ": "italians",
+          "civName": "İtalyanlar",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/italians.png",
+          "games": 1,
+          "wins": 0,
+          "losses": 1
+        },
+        {
+          "civ": "japanese",
+          "civName": "Japonlar",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/japanese.png",
+          "games": 1,
+          "wins": 0,
+          "losses": 1
+        },
+        {
+          "civ": "spanish",
+          "civName": "İspanyollar",
+          "civImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/civilizations/spanish.png",
+          "games": 1,
+          "wins": 0,
+          "losses": 1
+        }
+      ],
+      "map": [
+        {
+          "map": "rm_black-forest",
+          "mapName": "Kara Orman",
+          "mapImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/maps/rm_black-forest.png",
+          "games": 15,
+          "wins": 6,
+          "losses": 9
+        },
+        {
+          "map": "rm_amazon_tunnels",
+          "mapName": "Amazon Tüneli",
+          "mapImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/maps/rm_amazon_tunnels.png",
+          "games": 8,
+          "wins": 6,
+          "losses": 2
+        },
+        {
+          "map": "rm_four-lakes",
+          "mapName": "Dört Göl",
+          "mapImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/maps/rm_four-lakes.png",
+          "games": 3,
+          "wins": 2,
+          "losses": 1
+        },
+        {
+          "map": "rwm_china",
+          "mapName": "Çin",
+          "mapImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/maps/rwm_china.png",
+          "games": 2,
+          "wins": 1,
+          "losses": 1
+        },
+        {
+          "map": "rm_arena",
+          "mapName": "Arena",
+          "mapImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/maps/rm_arena.png",
+          "games": 2,
+          "wins": 0,
+          "losses": 2
+        },
+        {
+          "map": "rm_megarandom",
+          "mapName": "Mega Rastgele",
+          "mapImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/maps/rm_megarandom.png",
+          "games": 1,
+          "wins": 1,
+          "losses": 0
+        },
+        {
+          "map": "rm_michi",
+          "mapName": "Michi",
+          "mapImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/maps/rm_michi.png",
+          "games": 1,
+          "wins": 1,
+          "losses": 0
+        },
+        {
+          "map": "rm_coastal_forest",
+          "mapName": "Kıyı Ormanı",
+          "mapImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/maps/rm_coastal_forest.png",
+          "games": 1,
+          "wins": 0,
+          "losses": 1
+        },
+        {
+          "map": "rm_land_nomad",
+          "mapName": "Kara Göçebesi",
+          "mapImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/maps/rm_land_nomad.png",
+          "games": 1,
+          "wins": 0,
+          "losses": 1
+        },
+        {
+          "map": "rm_mediterranean",
+          "mapName": "Akdeniz",
+          "mapImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/maps/rm_mediterranean.png",
+          "games": 1,
+          "wins": 0,
+          "losses": 1
+        },
+        {
+          "map": "rm_steppe",
+          "mapName": "Bozkır",
+          "mapImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/maps/rm_steppe.png",
+          "games": 1,
+          "wins": 0,
+          "losses": 1
+        },
+        {
+          "map": "rwm_west_africa",
+          "mapName": "Batı Afrika",
+          "mapImageUrl": "https://backend.cdn.aoe2companion.com/public/aoe2/de/maps/rwm_west_africa.png",
+          "games": 1,
+          "wins": 0,
+          "losses": 1
+        }
+      ],
+      "allies": [
+        {
+          "profileId": 9175641,
+          "name": "Hiraeth 雨",
+          "country": "tr",
+          "countryIcon": "🇹🇷",
+          "games": 2,
+          "wins": 2,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 11713600,
+          "name": "miqu",
+          "country": "tr",
+          "countryIcon": "🇹🇷",
+          "games": 2,
+          "wins": 2,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 2122618,
+          "name": "Jefferson",
+          "country": "ca",
+          "countryIcon": "🇨🇦",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 3161704,
+          "name": "LVIS II",
+          "country": "co",
+          "countryIcon": "🇨🇴",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 11426197,
+          "name": "Slippers",
+          "country": "us",
+          "countryIcon": "🇺🇸",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 1261518,
+          "name": "der.tim.meister",
+          "country": "de",
+          "countryIcon": "🇩🇪",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 595170,
+          "name": "drunk_knight",
+          "country": "gr",
+          "countryIcon": "🇬🇷",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 2005554,
+          "name": "el gordo rooster",
+          "country": "ar",
+          "countryIcon": "🇦🇷",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 3633535,
+          "name": "maksmadeng",
+          "country": "de",
+          "countryIcon": "🇩🇪",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 6132669,
+          "name": "用象兵攻擊敵人",
+          "country": "tw",
+          "countryIcon": "🇹🇼",
+          "games": 1,
+          "wins": 1,
+          "losses": 0,
+          "verified": false
+        }
+      ],
+      "opponents": [
+        {
+          "profileId": 11606469,
+          "name": "Andarkan",
+          "country": "tr",
+          "countryIcon": "🇹🇷",
+          "games": 12,
+          "wins": 7,
+          "losses": 5,
+          "verified": false
+        },
+        {
+          "profileId": 9175641,
+          "name": "Hiraeth 雨",
+          "country": "tr",
+          "countryIcon": "🇹🇷",
+          "games": 12,
+          "wins": 5,
+          "losses": 7,
+          "verified": false
+        },
+        {
+          "profileId": 11713600,
+          "name": "miqu",
+          "country": "tr",
+          "countryIcon": "🇹🇷",
+          "games": 10,
+          "wins": 5,
+          "losses": 5,
+          "verified": false
+        },
+        {
+          "profileId": 5558863,
+          "name": "R.Xluss",
+          "country": "tr",
+          "countryIcon": "🇹🇷",
+          "games": 4,
+          "wins": 1,
+          "losses": 3,
+          "verified": false
+        },
+        {
+          "profileId": 9716637,
+          "name": "CHOSENN",
+          "country": "tr",
+          "countryIcon": "🇹🇷",
+          "games": 3,
+          "wins": 2,
+          "losses": 1,
+          "verified": false
+        },
+        {
+          "profileId": 11893727,
+          "name": "Kabuto",
+          "country": "tr",
+          "countryIcon": "🇹🇷",
+          "games": 3,
+          "wins": 1,
+          "losses": 2,
+          "verified": false
+        },
+        {
+          "profileId": 9197904,
+          "name": "SuspiciousStew",
+          "country": "tr",
+          "countryIcon": "🇹🇷",
+          "games": 3,
+          "wins": 1,
+          "losses": 2,
+          "verified": false
+        },
+        {
+          "profileId": 1755782,
+          "name": "MrPapillon",
+          "country": "fr",
+          "countryIcon": "🇫🇷",
+          "games": 2,
+          "wins": 2,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 11764427,
+          "name": "卂丂ㄒ乇Ҝ CSGOSKINS",
+          "country": "tr",
+          "countryIcon": "🇹🇷",
+          "games": 2,
+          "wins": 2,
+          "losses": 0,
+          "verified": false
+        },
+        {
+          "profileId": 3272451,
+          "name": "Juleten",
+          "country": "tr",
+          "countryIcon": "🇹🇷",
+          "games": 2,
+          "wins": 0,
+          "losses": 2,
+          "verified": false
+        }
+      ]
+    },
+    {
+      "leaderboardId": "rm_1v1_console",
+      "leaderboardName": "1v1 Random Map (Console)",
+      "abbreviation": "RM 1v1 🎮",
+      "civ": [],
+      "map": [],
+      "allies": [],
+      "opponents": []
+    },
+    {
+      "leaderboardId": "rm_team_console",
+      "leaderboardName": "Team Random Map (Console)",
+      "abbreviation": "RM Team 🎮",
+      "civ": [],
+      "map": [],
+      "allies": [],
+      "opponents": []
+    },
+    {
+      "leaderboardId": "ew_1v1_redbullwololo_console",
+      "leaderboardName": "Red Bull Wololo 1v1 (Console)",
+      "abbreviation": "RB 1v1 🎮",
+      "civ": [],
+      "map": [],
+      "allies": [],
+      "opponents": []
+    },
+    {
+      "leaderboardId": "ew_team_console",
+      "leaderboardName": "Team Empire Wars (Console)",
+      "abbreviation": "EW Team 🎮",
+      "civ": [],
+      "map": [],
+      "allies": [],
+      "opponents": []
+    }
+  ]
+}
